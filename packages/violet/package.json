@@ -1,0 +1,12 @@
+{
+  "name": "@violet/violet",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "violet": "bin/violet.js"
+  },
+  "dependencies": {
+    "esbuild": "^0.14.48"
+  }
+}
