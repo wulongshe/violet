@@ -1,5 +1,5 @@
 {
-  "name": "@violet/template",
+  "name": "@cruciferae/template",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,6 +9,6 @@
     "dayjs": "^1.11.3"
   },
   "devDependencies": {
-    "@violet/violet": "^1.0.0"
+    "@cruciferae/violet": "^1.0.0"
   }
 }
