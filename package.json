@@ -1,5 +1,6 @@
 {
   "name": "violet",
+  "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/*"
