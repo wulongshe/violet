@@ -1,6 +1,7 @@
 import path from 'path'
 import { parseModulePath } from './path.js'
 import { loaderJsonAsync, existsSync, removeFile } from './file.js'
+import { trimWith } from './utils.js'
 import { build } from 'esbuild'
 
 const root = process.cwd()
@@ -33,12 +34,21 @@ const parseUserConfig = async () => {
   return userConfig.default({ root, env: import.meta.env })
 }
 
+const formatConfig = (config) => ({
+  ...config,
+  alias: formatAlias(config.alias)
+})
+
+const formatAlias = (alias) => Object.keys(alias).reduce((pre, curr) =>
+  (pre[trimWith(curr, '/')] = '/' + trimWith(alias[curr], '/'), pre), {})
+
 const defaultConfig = {
   port: 3000,
 }
+
 const resolveConfig = new Promise((resolve, reject) => Promise
   .all([parseVioletRoot(), parsePackageJson(), parseUserConfig()])
-  .then((configs) => resolve(mergeConfig(configs)))
+  .then((configs) => resolve(formatConfig(mergeConfig(configs))))
   .catch(reject)
 )
 

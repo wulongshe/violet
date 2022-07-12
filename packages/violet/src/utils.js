@@ -3,16 +3,14 @@ export const getExtension = filename => {
   return idx !== -1 ? filename.substring(idx) : null
 }
 
-export const transformMapToObject = (map) => [...map.entries()].reduce((obj, [key, value]) => (obj[key] = value, obj), {})
-
+export const transformMapToObject = (map) =>
+  [...map.entries()].reduce((obj, [key, value]) => (obj[key] = value, obj), {})
 
 export const ensureStartWith = (str) => (prefixList) => {
-  if (!Array.isArray(prefixList)) {
-    prefixList = [prefixList]
-  }
+  prefixList = Array.isArray(prefixList) ? prefixList : [prefixList]
 
   for (let i = 0; i < prefixList.length; i++) {
-    if (str.indexOf(prefixList[i]) !== -1) {
+    if (str.indexOf(prefixList[i]) === 0) {
       return i
     }
   }
@@ -28,7 +26,7 @@ export const transformModulePath = (modulePath, alias) => {
 
   let index = -1
 
-  if ((index = moduleEnsureStartWith(['./', '../'])) !== -1) {
+  if ((index = moduleEnsureStartWith(['.', './', '../'])) !== -1) {
     return modulePath
   } else if ((index = moduleEnsureStartWith(aliasKeys)) !== -1) {
     const key = aliasKeys[index]
@@ -38,10 +36,7 @@ export const transformModulePath = (modulePath, alias) => {
   return `/node_modules/${modulePath}/esm/index.js`
 }
 
-export const replaceModulePath = (content, alias) => {
-  return content.replace(/(import.*)'(.*)'/g, (_, $1, $2) => {
-    const resolvePath = transformModulePath($2, alias)
-    console.log(`[replace] ${$2} => ${resolvePath}`)
-    return `${$1}'${resolvePath}'`
-  })
-}
+export const replaceModulePath = (content, alias) => content.replace(
+  /(import.*)'(.*)'/g,
+  (_, $1, $2) => `${$1}'${transformModulePath($2, alias)}'`
+)
