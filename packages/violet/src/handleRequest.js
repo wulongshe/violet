@@ -1,58 +1,25 @@
 import path from 'path'
 import fs from 'fs'
 import { useConfig } from './config.js'
-import { loader } from './file.js'
-import { getExtension, transformMapToObject, replaceModulePath, trimWith } from './utils.js'
+import { loader, loaderJson } from './file.js'
+import { transformMapToObject, replaceModulePath } from './utils.js'
 
-const root = process.cwd()
-const { alias, extensions } = await useConfig()
-const resolveAlias = Object.keys(alias).
-  reduce((pre, curr) => (pre[trimWith(curr, '/')] = '/' + trimWith(alias[curr], '/'), pre), {})
-
-const contentType = {
-  '.js': 'text/javascript',
-  '.html': 'text/html',
-  '.json': 'application/json',
-  '.css': 'text/css',
-}
+const { alias, extensions, violetRoot } = await useConfig()
+const contentType = loaderJson(path.join(violetRoot, './src/data/contentType.json'))
 
 export default (options) => (req, res) => {
   /* 解析url */
   const url = req.url === '/' ? 'index.html' : req.url
-  let [pathname, queryParams] = url.split('?')
-  let ext = getExtension(pathname)
+  const [pathname, queryParams] = url.split('?')
   const query = transformMapToObject(new URLSearchParams(queryParams))
-  const isBareModule = pathname.indexOf('/node_modules/') === 0
-
-  /* 补全路径 */
-  let rootPath = root
-  let absolutePath = path.join(root, pathname)
-  analysesAbsolutePath:
-  do {
-    if (!ext) {
-      for (const suf of extensions) {
-        absolutePath = path.join(rootPath, pathname) + suf
-        if (fs.existsSync(absolutePath)) {
-          pathname += suf
-          ext = suf
-          break analysesAbsolutePath
-        }
-      }
-    } else {
-      absolutePath = path.join(rootPath, pathname)
-    }
-
-    const temp = path.join(rootPath, '../')
-    if (temp === rootPath) break analysesAbsolutePath
-    rootPath = temp
-  } while (!fs.existsSync(absolutePath) && isBareModule)
+  const { absolutePath, ext } = analysesAbsolutePath(pathname)
 
   /* 加载并返回文件 */
   try {
-    console.log(`[loader] ${absolutePath}`)
+    console.log(`[loader] ${pathname} => ${absolutePath}`)
     let content = loader(absolutePath)
-    if (ext === '.js') {
-      content = replaceModulePath(content, resolveAlias)
+    if (['.js', '.ts', '.mjs'].includes(ext)) {
+      content = replaceModulePath(content, alias)
     }
     res.setHeader('Content-Type', contentType[ext])
     res.end(content)
@@ -60,4 +27,32 @@ export default (options) => (req, res) => {
     res.statusCode = 404
     res.end('404 Not Found')
   }
+}
+
+/* 补全路径 */
+const analysesAbsolutePath = (pathname) => {
+  let root = process.cwd()
+  const osRoot = root.slice(0, root.indexOf(path.sep) + 1)
+  const isBareModule = pathname.indexOf('/node_modules/') === 0
+  const extname = path.extname(pathname)
+
+  do {
+    if (!extname) {
+      for (const ext of extensions) {
+        const absolutePath = path.join(root, pathname) + ext
+        if (fs.existsSync(absolutePath)) {
+          return { absolutePath, ext }
+        }
+      }
+    } else {
+      const absolutePath = path.join(root, pathname)
+      if (fs.existsSync(absolutePath)) {
+        return { absolutePath, ext: extname }
+      }
+    }
+
+    root = path.join(root, '../')
+  } while (osRoot !== root && isBareModule)
+
+  return { absolutePath: pathname, ext: extname }
 }

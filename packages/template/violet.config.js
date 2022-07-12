@@ -7,7 +7,8 @@ export default ({ root, env }) => ({
     '.js',
     '.mjs',
     '.css',
-    '.html'
+    '.html',
+    '.json'
   ],
 })
 
