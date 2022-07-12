@@ -4,6 +4,20 @@ import { loaderJsonAsync, existsSync, removeFile } from './file.js'
 import { trimWith } from './utils.js'
 import { build } from 'esbuild'
 
+const defaultConfig = {
+  port: 3000,
+  alias: {
+    '@': '/src'
+  },
+  extensions: [
+    '.js',
+    '.mjs',
+    '.css',
+    '.html',
+    '.json',
+  ],
+}
+
 const root = process.cwd()
 const { __dirname } = parseModulePath(import.meta.url)
 
@@ -41,10 +55,6 @@ const formatConfig = (config) => ({
 
 const formatAlias = (alias) => Object.keys(alias).reduce((pre, curr) =>
   (pre[trimWith(curr, '/')] = '/' + trimWith(alias[curr], '/'), pre), {})
-
-const defaultConfig = {
-  port: 3000,
-}
 
 const resolveConfig = new Promise((resolve, reject) => Promise
   .all([parseVioletRoot(), parsePackageJson(), parseUserConfig()])
