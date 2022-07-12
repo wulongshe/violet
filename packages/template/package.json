@@ -1,6 +1,6 @@
 {
   "name": "@cruciferae/template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -10,6 +10,6 @@
     "dayjs": "^1.11.3"
   },
   "devDependencies": {
-    "@cruciferae/violet": "^1.0.0"
+    "@cruciferae/violet": "^1.0.1"
   }
 }
