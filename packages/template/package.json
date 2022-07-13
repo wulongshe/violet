@@ -1,6 +1,6 @@
 {
   "name": "@violet-plus/template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "scripts": {
     "dev": "violet"
@@ -9,6 +9,6 @@
     "dayjs": "^1.11.3"
   },
   "devDependencies": {
-    "@violet-plus/violet": "^1.0.0"
+    "@violet-plus/violet": "^1.0.1"
   }
 }
