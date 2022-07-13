@@ -1,8 +1,7 @@
 {
-  "name": "@cruciferae/template",
-  "version": "1.0.1",
+  "name": "@violet-plus/template",
+  "version": "1.0.0",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "dev": "violet"
   },
@@ -10,6 +9,6 @@
     "dayjs": "^1.11.3"
   },
   "devDependencies": {
-    "@cruciferae/violet": "^1.0.1"
+    "@violet-plus/violet": "^1.0.0"
   }
 }
