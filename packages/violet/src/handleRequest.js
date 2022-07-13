@@ -4,7 +4,7 @@ import { useConfig } from './config.js'
 import { loader, loaderJson } from './file.js'
 import { transformMapToObject, replaceModulePath } from './utils.js'
 
-const { alias, extensions, violetRoot } = await useConfig()
+const { alias, extensions, violetRoot, extname } = await useConfig()
 const contentType = loaderJson(path.join(violetRoot, './src/data/contentType.json'))
 
 export default (options) => (req, res) => {
@@ -18,14 +18,15 @@ export default (options) => (req, res) => {
   try {
     console.log(`[loader] ${pathname} => ${absolutePath}`)
     let content = loader(absolutePath)
-    if (['.js', '.ts', '.mjs'].includes(ext)) {
-      content = replaceModulePath(content, alias)
+    if (extname.includes(ext)) {
+      content = replaceModulePath(content, alias, extname)
     }
-    res.setHeader('Content-Type', contentType[ext])
+    res.setHeader('Content-Type', contentType[ext] ?? contentType['.js'])
     res.end(content)
   } catch (e) {
     res.statusCode = 404
     res.end('404 Not Found')
+    console.log('[error] ', e.message)
   }
 }
 

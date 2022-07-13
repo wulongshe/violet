@@ -1,3 +1,5 @@
+import { analysesBareModulePath } from './path.js'
+
 export const getExtension = filename => {
   const idx = filename.lastIndexOf('.')
   return idx !== -1 ? filename.substring(idx) : null
@@ -20,23 +22,23 @@ export const ensureStartWith = (str) => (prefixList) => {
 
 export const trimWith = (str, ch) => str.replace(new RegExp(`^${ch}+|${ch}+$`, 'g'), '')
 
-export const transformModulePath = (modulePath, alias) => {
+export const transformModulePath = (modulePath, alias, extname) => {
   const aliasKeys = Object.keys(alias)
   const moduleEnsureStartWith = ensureStartWith(modulePath)
 
   let index = -1
 
-  if ((index = moduleEnsureStartWith(['.', './', '../'])) !== -1) {
+  if ((index = moduleEnsureStartWith(['.', './', '../'])) === 0) {
     return modulePath
-  } else if ((index = moduleEnsureStartWith(aliasKeys)) !== -1) {
+  } else if ((index = moduleEnsureStartWith(aliasKeys)) === 0) {
     const key = aliasKeys[index]
     return modulePath.replace(key, alias[key])
   }
   // TODO: 裸模块 bare module
-  return `/node_modules/${modulePath}/esm/index.js`
+  return analysesBareModulePath(modulePath, extname)
 }
 
-export const replaceModulePath = (content, alias) => content.replace(
-  /(import.*)'(.*)'/g,
-  (_, $1, $2) => `${$1}'${transformModulePath($2, alias)}'`
+export const replaceModulePath = (content, alias, extname) => content.replace(
+  /(import.*|export.*from\s+)['"](.*)['"]/g,
+  (_, $1, $2) => `${$1}'${transformModulePath($2, alias, extname)}'`
 )
