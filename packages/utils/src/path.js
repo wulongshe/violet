@@ -1,7 +1,7 @@
 import url from 'url'
 import path from 'path'
 import fs from 'fs'
-import { loaderJson, existsSync } from './file.js'
+import { loaderJson, existsSyncWithExtensions } from './file.js'
 
 export const parseModulePath = (fileUrl) => {
   const __filename = url.fileURLToPath(fileUrl);
@@ -14,7 +14,7 @@ export const analysesBareModulePath = (modulePath, extname) => {
   const osRoot = root.slice(0, root.indexOf(path.sep) + 1)
 
   while (osRoot !== root) {
-    const bareModulePath = analysesBareModulePathWithRoot(root, modulePath)
+    const bareModulePath = analysesBareModulePathWithRoot(root, modulePath, extname)
     if (bareModulePath) {
       return bareModulePath
     }
@@ -42,11 +42,11 @@ export const analysesBareModulePathWithRoot = (root, modulePath, extname) => {
   if (fs.existsSync(packagePath)) {
     const { module: esm, main } = loaderJson(packagePath)
     if (esm) return `${moduleDirPath}/${esm}`
-    const esmPath = existsSync(path.join(moduleDir, 'esm/index'), extname)
+    const esmPath = existsSyncWithExtensions(path.join(moduleDir, 'esm/index'), extname)
     if (esmPath) return `${moduleDirPath}/esm/index${path.extname(indexPath)}`
     if (main) return `${moduleDirPath}/${main}`
   } else {
-    const indexPath = existsSync(path.join(moduleDir, 'index'), extensions)
+    const indexPath = existsSyncWithExtensions(path.join(moduleDir, 'index'), extensions)
     if (indexPath) return `${moduleDirPath}/index${path.extname(indexPath)}`
   }
   return null
