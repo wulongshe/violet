@@ -1,6 +1,6 @@
 {
   "name": "@violet-plus/template",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "dev": "violet"
@@ -10,6 +10,6 @@
     "vue": "^3.2.36"
   },
   "devDependencies": {
-    "@violet-plus/violet": "^0.0.0"
+    "@violet-plus/violet": "^0.0.1"
   }
 }
