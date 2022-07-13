@@ -1,14 +1,15 @@
 {
   "name": "@violet-plus/template",
-  "version": "1.0.1",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "violet"
   },
   "dependencies": {
-    "dayjs": "^1.11.3"
+    "dayjs": "^1.11.3",
+    "vue": "^3.2.36"
   },
   "devDependencies": {
-    "@violet-plus/violet": "^1.0.1"
+    "@violet-plus/violet": "^0.0.0"
   }
 }

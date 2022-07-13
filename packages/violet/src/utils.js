@@ -42,3 +42,6 @@ export const replaceModulePath = (content, alias, extname) => content.replace(
   /(import.*|export.*from\s+)['"](.*)['"]/g,
   (_, $1, $2) => `${$1}'${transformModulePath($2, alias, extname)}'`
 )
+
+export const replaceGlobalConstants = (content, constants) => Object.entries(constants)
+  .reduce((content, [key, value]) => content.replace(new RegExp(key, 'g'), JSON.stringify(value)), content)
