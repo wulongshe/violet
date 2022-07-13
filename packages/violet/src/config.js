@@ -11,6 +11,10 @@ export const defaultConfig = {
   },
   extensions: ['.js', '.mjs', '.css', '.html', '.json'],
   extname: ['.js', '.ts', '.mjs', '.cjs'],
+  constants: {
+    'process.env.NODE_ENV': process.env.NODE_ENV
+  },
+  processJson: JSON.stringify(process)
 }
 
 const root = process.cwd()

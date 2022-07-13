@@ -2,9 +2,10 @@ import path from 'path'
 import fs from 'fs'
 import { useConfig } from './config.js'
 import { loader, loaderJson } from './file.js'
-import { transformMapToObject, replaceModulePath } from './utils.js'
+import { transformMapToObject, replaceModulePath, replaceGlobalConstants } from './utils.js'
+import { compilerVueSFC2ESM } from './vue-compiler.js'
 
-const { alias, extensions, violetRoot, extname } = await useConfig()
+const { alias, extensions, violetRoot, extname, constants, processJson } = await useConfig()
 const contentType = loaderJson(path.join(violetRoot, './src/data/contentType.json'))
 
 export default (options) => (req, res) => {
@@ -18,8 +19,14 @@ export default (options) => (req, res) => {
   try {
     console.log(`[loader] ${pathname} => ${absolutePath}`)
     let content = loader(absolutePath)
-    if (extname.includes(ext)) {
+    if (['.vue'].includes(ext)) {
+      content = compilerVueSFC2ESM(content)
+    }
+    if ([...extname, '.vue'].includes(ext)) {
       content = replaceModulePath(content, alias, extname)
+    }
+    if (pathname === 'index.html') {
+      content = prependScript(content, `window.process = ${processJson}`)
     }
     res.setHeader('Content-Type', contentType[ext] ?? contentType['.js'])
     res.end(content)
@@ -57,3 +64,9 @@ const analysesAbsolutePath = (pathname) => {
 
   return { absolutePath: pathname, ext: extname }
 }
+
+export const prependInBody = (html, content) => html.replace(/<body>/g, `<body>${content}`)
+
+export const prependScriptBySrc = (html, url) => prependInBody(html, `<script src="${url}"></script>`)
+
+export const prependScript = (html, content) => prependInBody(html, `<script>${content}</script>`)
