@@ -11,7 +11,7 @@ export const loaderJson = (pathname) => JSON.parse(loader(pathname))
 
 export const loaderJsonAsync = async (pathname) => JSON.parse(await loaderAsync(pathname))
 
-export const existsSync = (filePath, extensions) => {
+export const existsSyncWithExtensions = (filePath, extensions) => {
   for (const ext of extensions) {
     const fullFilePath = filePath + ext
     if (fs.existsSync(fullFilePath)) {
@@ -25,3 +25,5 @@ export const removeFile = (filepath) => {
     fs.unlinkSync(filepath)
   }
 }
+
+export const writeJson = (path, data) => fs.writeFileSync(path, JSON.stringify(data), 'utf-8')

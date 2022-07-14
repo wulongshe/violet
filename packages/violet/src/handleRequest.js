@@ -1,11 +1,10 @@
 import path from 'path'
 import fs from 'fs'
 import { useConfig } from './config.js'
-import { loader, loaderJson } from './file.js'
-import { transformMapToObject, replaceModulePath, replaceGlobalConstants } from './utils.js'
+import { loader, loaderJson, transformMapToObject, replaceModulePath } from '@violet-plus/utils'
 import { compilerVueSFC2ESM } from './vue-compiler.js'
 
-const { alias, extensions, violetRoot, extname, constants, processJson } = await useConfig()
+const { alias, extensions, violetRoot, extname, processJson } = await useConfig()
 const contentType = loaderJson(path.join(violetRoot, './src/data/contentType.json'))
 
 export default (options) => (req, res) => {
