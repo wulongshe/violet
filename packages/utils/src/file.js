@@ -25,3 +25,5 @@ export const removeFile = (filepath) => {
     fs.unlinkSync(filepath)
   }
 }
+
+export const writeJson = (path, data) => fs.writeFileSync(path, JSON.stringify(data), 'utf-8')
