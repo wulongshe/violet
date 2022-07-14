@@ -3,6 +3,7 @@
   "license": "MIT",
   "version": "0.0.1",
   "main": "src/index.js",
+  "module": "src/index.js",
   "type": "module",
   "bin": {
     "violet": "bin/violet.js"
@@ -11,6 +12,7 @@
     "@violet-plus/create": "^0.0.0",
     "@violet-plus/utils": "^0.0.0",
     "@vue/compiler-sfc": "^3.2.37",
+    "cac": "^6.7.12",
     "esbuild": "^0.14.48"
   }
 }
