@@ -7,9 +7,15 @@ const updateCounter = (offset) => counter.value += offset
 </script>
 
 <template>
-  <h2>{{message}}</h2>
+  <h2 class="message">{{message}}</h2>
   <button @click="updateCounter(-1)">-</button>
   <input type="number" v-model="counter" style="width: 40px">
   <button @click="updateCounter(+1)">+</button>
   <h3>{{counter}}</h3>
 </template>
+
+<style>
+.message {
+  color: skyblue;
+}
+</style>

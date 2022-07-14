@@ -1,7 +1,5 @@
 import path from 'path'
-import { parseModulePath } from './path.js'
-import { loaderJsonAsync, existsSync, removeFile } from './file.js'
-import { trimWith } from './utils.js'
+import { parseModulePath, loaderJsonAsync, existsSyncWithExtensions, removeFile, trimWith } from '@violet-plus/utils'
 import { build } from 'esbuild'
 
 export const defaultConfig = {
@@ -30,7 +28,7 @@ const parseUserConfig = async () => {
   const outFile = '../.violet/violet.config.js'
   const violetConfigName = 'violet.config'
   const extensions = ['.js', '.ts']
-  const configFile = existsSync(path.join(root, violetConfigName), extensions)
+  const configFile = existsSyncWithExtensions(path.join(root, violetConfigName), extensions)
 
   if (!configFile) return {}
 

@@ -1,16 +1,30 @@
-import http from 'http'
-import handleRequest from './handleRequest.js'
-import { useConfig } from './config.js'
+import { cac } from 'cac'
+import { create } from '@violet-plus/create'
+import { server } from './server.js'
+import { useConfig, mergeConfig } from './config.js'
 
 const root = process.cwd()
-const { port, violetRoot } = await useConfig()
+const config = await useConfig()
 
-const app = http.createServer()
+const cli = cac('violet')
 
-app.on('request', handleRequest())
+// dev
+cli
+  .command('dev')
+  .option('--mode [mode]')
+  .action(async (options) => {
+    mergeConfig(options)
+    server(root, { ...config, ...options })
+  })
 
-app.listen(port, () => {
-  console.log(`[root] ${root}`)
-  console.log(`[violetRoot] ${violetRoot}`)
-  console.log(`[localhost] http://127.0.0.1:${port}`)
-})
+// create
+cli
+  .command('create [projectName]')
+  .action(async (projectName, options) => {
+    console.log('[projectName] ', projectName)
+    create({ root, projectName, ...options })
+  })
+
+cli.help()
+cli.version(config.version)
+cli.parse()
