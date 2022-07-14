@@ -1,7 +1,7 @@
 {
   "name": "@violet-plus/violet",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "src/index.js",
   "module": "src/index.js",
   "type": "module",
@@ -9,8 +9,8 @@
     "violet": "bin/violet.js"
   },
   "dependencies": {
-    "@violet-plus/create": "^0.0.0",
-    "@violet-plus/utils": "^0.0.0",
+    "@violet-plus/create": "^0.0.1",
+    "@violet-plus/utils": "^0.0.1",
     "@vue/compiler-sfc": "^3.2.37",
     "cac": "^6.7.12",
     "esbuild": "^0.14.48"
