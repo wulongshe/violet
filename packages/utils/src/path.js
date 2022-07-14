@@ -51,3 +51,15 @@ export const analysesBareModulePathWithRoot = (root, modulePath, extname) => {
   }
   return null
 }
+
+export const analysesBareModuleDir = (modulePath) => {
+  let root = process.cwd()
+  const osRoot = root.slice(0, root.indexOf(path.sep) + 1)
+
+  while (osRoot !== root) {
+    const moduleDir = path.join(root, 'node_modules', modulePath)
+    if (fs.existsSync(moduleDir)) return moduleDir
+    root = path.join(root, '../')
+  }
+  return null
+}
