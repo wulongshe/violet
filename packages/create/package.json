@@ -1,11 +1,11 @@
 {
   "name": "@violet-plus/create",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "src/index.js",
   "module": "src/index.js",
   "type": "module",
   "license": "MIT",
   "dependencies": {
-    "@violet-plus/template": "^0.0.1"
+    "@violet-plus/template": "^0.0.2"
   }
 }
