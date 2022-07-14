@@ -16,7 +16,7 @@
 # 全局下载
 yarn add violet-plus -g
 # 创建项目
-yarn create <project name>
+violet create <project name>
 # 安装依赖
 yarn
 # 启动开发环境
