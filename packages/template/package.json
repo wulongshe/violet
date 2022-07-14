@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "license": "MIT",
   "scripts": {
-    "dev": "violet"
+    "dev": "violet dev"
   },
   "dependencies": {
     "dayjs": "^1.11.3",
