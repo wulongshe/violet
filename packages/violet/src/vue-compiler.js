@@ -1,4 +1,4 @@
-import { parse, compileScript, compileTemplate, rewriteDefault } from '@vue/compiler-sfc'
+import { parse, compileScript, compileTemplate, rewriteDefault, compileStyle } from '@vue/compiler-sfc'
 
 export const compilerVueSFC2ESM = (file) => {
   const { descriptor, error } = parse(file)
@@ -27,6 +27,20 @@ export const compilerVueSFC2ESM = (file) => {
   codeList.push(template.code)
   codeList.push(`__sfc_main__.render=render`)
   codeList.push(`export default __sfc_main__`)
+
+  for (const { content } of descriptor.styles) {
+    const styleCode = compileStyle({
+      source: content,
+      id,
+      filename: "main.vue",
+      scoped: scopeId,
+    })
+    codeList.push(`
+    var el = document.createElement('style')
+    el.innerHTML =  \`${styleCode.code}\`
+    document.body.append(el);
+  `)
+  }
 
   return codeList.join('\n')
 }
