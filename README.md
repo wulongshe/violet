@@ -13,19 +13,22 @@
 ## 使用
 
 ```bash
-# 全局下载
-yarn add violet-plus -g
-# 创建项目
-violet create <project name>
+# 下载
+yarn add @violet-plus/violet
 # 安装依赖
 yarn
 # 启动开发环境
+# package.json 中添加脚本 `{ "scripts" : { "violet dev" } }`
 yarn dev
 ```
 
+## 业务模板
+
+> 参考 `https://gitee.com/yuki-0505/violet/tree/master/packages/template`
+
 ## 配置
 
-- 项目根目录下 配置 `violet.config[.js|.ts]`
+- 项目根目录下 配置 `violet.config.js`
 
 ```js
 export default ({ root, env }) => ({
