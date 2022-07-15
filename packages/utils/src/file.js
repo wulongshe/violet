@@ -27,3 +27,13 @@ export const removeFile = (filepath) => {
 }
 
 export const writeJson = (path, data) => fs.writeFileSync(path, JSON.stringify(data), 'utf-8')
+
+export const mkdirSync = (dirname) => {
+  const list = dirname.split(path.sep)
+  for (let i = 0, targetDir = ''; i < list.length; i++) {
+    targetDir += list[i] + path.sep
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir)
+    }
+  }
+}
