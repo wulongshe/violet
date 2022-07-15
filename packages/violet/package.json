@@ -9,6 +9,7 @@
     "violet": "bin/violet.js"
   },
   "dependencies": {
+    "@violet-plus/class": "^0.0.0",
     "@violet-plus/utils": "^0.0.1",
     "@vue/compiler-sfc": "^3.2.37",
     "cac": "^6.7.12",
